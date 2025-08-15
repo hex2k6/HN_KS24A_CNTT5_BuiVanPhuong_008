@@ -19,27 +19,32 @@ abstract class LibraryItem {
     id: number;
     title: string;
     isAvailable: boolean;   
-    constructor(id: number, title: string) {
+
+    constructor(title: string) {
         this.id = LibraryItem.nextId++;
         this.title = title;
         this.isAvailable = true;
     }
+
     borrowItem(): void {
         if (this.isAvailable) {
             this.isAvailable = false;
         }
     }
+
     returnItem(): void {
         this.isAvailable = true;
     }
+
     abstract calculateLateFee(daysOverdue: number): number;
     abstract getLoanPeriod(): number;
     abstract getItemType(): string;
 }
+
 class Book extends LibraryItem {
     author: string;
-    constructor(title: string, id: number, author: string) {
-        super( id, title);
+    constructor(title: string, author: string) {
+        super(title);
         this.author = author;
     }
     calculateLateFee(daysOverdue: number): number {
@@ -48,11 +53,15 @@ class Book extends LibraryItem {
     getLoanPeriod(): number {
         return 30; 
     }
+    getItemType(): string {
+        return "Book";
+    }
 }
+
 class Magazine extends LibraryItem {
     issueNumber: number;
-    constructor(id: number, title: string, issueNumber: number) {
-        super(id, title);
+    constructor(title: string, issueNumber: number) {
+        super(title);
         this.issueNumber = issueNumber;
     }
     calculateLateFee(daysOverdue: number): number {
@@ -61,7 +70,11 @@ class Magazine extends LibraryItem {
     getLoanPeriod(): number {
         return 7; 
     }
+    getItemType(): string {
+        return "Magazine";
+    }
 }
+
 class Loan {
     private static nextId = 1;
     loanId: number;
@@ -334,4 +347,5 @@ class LibraryApp{
         }
         this.showMenu(); 
     }
+
 }
